@@ -1,0 +1,422 @@
+{
+  "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "interval",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "Admin__NoBrandAvailable",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Admin__Not_Admin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Admin__UpkeepNotTrue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Admin__WithdrawFailed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "brandAdd",
+          "type": "address"
+        }
+      ],
+      "name": "BrandAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "brandAdd",
+          "type": "address"
+        }
+      ],
+      "name": "WarrantyExtended",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_brandAdd",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_brandName",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_warrantyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "addBrand",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "checkUpkeep",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "upkeepNeeded",
+          "type": "bool"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_brandAdd",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_warrantyIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "extendWarranty",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBrandAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "brandAdd",
+          "type": "address"
+        }
+      ],
+      "name": "getBrandIndex",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBrandName",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBrandWarrantyLeft",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getInterval",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getNumberOfBrands",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getOwner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getWarrantyPack",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "performUpkeep",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xae8b7c6c5d2c94de1a7b9e6b5473112a7bfce87657bb6c1bc514367e1fdb8113",
+  "receipt": {
+    "to": null,
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "transactionIndex": 0,
+    "gasUsed": "1159324",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x7a64d1005d9074311521fd6d4e9c0fbcc0ad10aa927e09444051e4f6e756ec21",
+    "transactionHash": "0xae8b7c6c5d2c94de1a7b9e6b5473112a7bfce87657bb6c1bc514367e1fdb8113",
+    "logs": [],
+    "blockNumber": 1,
+    "cumulativeGasUsed": "1159324",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "86400"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "161b6086896217d25e9190cee0f3bbc2",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.8+commit.dddeac2f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"interval\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"Admin__NoBrandAvailable\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Admin__Not_Admin\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Admin__UpkeepNotTrue\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Admin__WithdrawFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"brandAdd\",\"type\":\"address\"}],\"name\":\"BrandAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"brandAdd\",\"type\":\"address\"}],\"name\":\"WarrantyExtended\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_brandAdd\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_brandName\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_warrantyIndex\",\"type\":\"uint256\"}],\"name\":\"addBrand\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"checkUpkeep\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"upkeepNeeded\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_brandAdd\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_warrantyIndex\",\"type\":\"uint256\"}],\"name\":\"extendWarranty\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getBrandAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"brandAdd\",\"type\":\"address\"}],\"name\":\"getBrandIndex\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getBrandName\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getBrandWarrantyLeft\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getInterval\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getNumberOfBrands\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getWarrantyPack\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"name\":\"performUpkeep\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"It interracts with the Brand Smart Contract to add their details in brands array & check for their warranty period.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"Admin Smart Contract\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"This contract is only accessable by someone in authority and can be used to check & maintain brands that provide nft warranties.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Admin.sol\":\"Admin\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\ninterface KeeperCompatibleInterface {\\n  /**\\n   * @notice method that is simulated by the keepers to see if any work actually\\n   * needs to be performed. This method does does not actually need to be\\n   * executable, and since it is only ever simulated it can consume lots of gas.\\n   * @dev To ensure that it is never called, you may want to add the\\n   * cannotExecute modifier from KeeperBase to your implementation of this\\n   * method.\\n   * @param checkData specified in the upkeep registration so it is always the\\n   * same for a registered upkeep. This can easily be broken down into specific\\n   * arguments using `abi.decode`, so multiple upkeeps can be registered on the\\n   * same contract and easily differentiated by the contract.\\n   * @return upkeepNeeded boolean to indicate whether the keeper should call\\n   * performUpkeep or not.\\n   * @return performData bytes that the keeper should call performUpkeep with, if\\n   * upkeep is needed. If you would like to encode data to decode later, try\\n   * `abi.encode`.\\n   */\\n  function checkUpkeep(bytes calldata checkData) external returns (bool upkeepNeeded, bytes memory performData);\\n\\n  /**\\n   * @notice method that is actually executed by the keepers, via the registry.\\n   * The data returned by the checkUpkeep simulation will be passed into\\n   * this method to actually be executed.\\n   * @dev The input to this method should not be trusted, and the caller of the\\n   * method should not even be restricted to any single registry. Anyone should\\n   * be able call it, and the input should be validated, there is no guarantee\\n   * that the data passed in is the performData returned from checkUpkeep. This\\n   * could happen due to malicious keepers, racing keepers, or simply a state\\n   * change while the performUpkeep transaction is waiting for confirmation.\\n   * Always validate the data passed in.\\n   * @param performData is the data which was passed back from the checkData\\n   * simulation. If it is encoded, it can easily be decoded into other types by\\n   * calling `abi.decode`. This data should not be trusted, and should be\\n   * validated against the contract's current state.\\n   */\\n  function performUpkeep(bytes calldata performData) external;\\n}\\n\",\"keccak256\":\"0xb6577cda6b731b655aebcb6e3c24f8658d3f4c5eda07200622d07d4570af33ea\",\"license\":\"MIT\"},\"contracts/Admin.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\n\\npragma solidity ^0.8.8;\\n\\n//Imports\\nimport \\\"@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol\\\";\\n//Errors\\nerror Admin__Not_Admin();\\nerror Admin__WithdrawFailed();\\nerror Admin__UpkeepNotTrue();\\nerror Admin__NoBrandAvailable();\\n\\n/**@title Admin Smart Contract\\n *@notice This contract is only accessable by someone in authority and can be used to check & maintain brands that provide nft warranties.\\n *@dev It interracts with the Brand Smart Contract to add their details in brands array & check for their warranty period.\\n */\\ncontract Admin is KeeperCompatibleInterface {\\n    //Type Declaration\\n    struct Brand {\\n        address brandAddress;\\n        string brandName;\\n        uint256 warrantyPeriod;\\n    }\\n\\n    //State Variables\\n    address payable private immutable i_owner;\\n    uint256 private immutable i_interval;\\n    Brand[] private s_brands;\\n    uint256 private s_currentTimeStamp;\\n    mapping(uint256 => uint256) private s_warrantyPack;\\n    mapping(address => uint256) private s_addressToBrandIndex;\\n\\n    //Events\\n    event BrandAdded(address indexed brandAdd);\\n    event WarrantyExtended(address indexed brandAdd);\\n\\n    //Modifiers\\n    modifier onlyAdmin() {\\n        if (msg.sender != i_owner) revert Admin__Not_Admin();\\n        _;\\n    }\\n\\n    //Constructor\\n    constructor(uint256 interval) {\\n        i_owner = payable(msg.sender);\\n        i_interval = interval;\\n        s_currentTimeStamp = block.timestamp;\\n        s_warrantyPack[1] = 30;\\n        s_warrantyPack[2] = 60;\\n        s_warrantyPack[3] = 90;\\n    }\\n\\n    //Recieve or Fallback\\n\\n    //Functions\\n\\n    ////External\\n\\n    function addBrand(\\n        address _brandAdd,\\n        string memory _brandName,\\n        uint256 _warrantyIndex\\n    ) external {\\n        s_addressToBrandIndex[_brandAdd] = s_brands.length;\\n        s_brands.push(Brand(_brandAdd, _brandName, s_warrantyPack[_warrantyIndex]));\\n        emit BrandAdded(_brandAdd);\\n    }\\n\\n    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external {\\n        uint256 index = s_addressToBrandIndex[_brandAdd];\\n        s_brands[index].warrantyPeriod += s_warrantyPack[_warrantyIndex];\\n        emit WarrantyExtended(_brandAdd);\\n    }\\n\\n    ////Public\\n\\n    function withdraw() public onlyAdmin {\\n        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}(\\\"\\\");\\n        if (!callSuccess) revert Admin__WithdrawFailed();\\n    }\\n\\n    function checkUpkeep(\\n        bytes memory /* checkData */\\n    )\\n        public\\n        view\\n        override\\n        returns (\\n            bool upkeepNeeded,\\n            bytes memory /* performData */\\n        )\\n    {\\n        upkeepNeeded = (block.timestamp - s_currentTimeStamp) > i_interval;\\n        return (upkeepNeeded, \\\"0x0\\\");\\n    }\\n\\n    function performUpkeep(\\n        bytes calldata /* performData */\\n    ) external override {\\n        (bool upkeepNeeded, ) = checkUpkeep(\\\"\\\");\\n\\n        if (!upkeepNeeded) revert Admin__UpkeepNotTrue();\\n        if (s_brands.length == 0) revert Admin__NoBrandAvailable();\\n\\n        for (uint256 i = 0; i < s_brands.length; i++) {\\n            s_brands[i].warrantyPeriod -= 1;\\n        }\\n\\n        // Brand[] storage finalTemp;\\n        // // finalTemp.push(Brand(\\\"\\\",\\\"\\\",2));\\n        // for (uint256 i = 0; i < s_brands.length; i++) {\\n        //     if (s_brands[i].warrantyPeriod != 0) {\\n        //         finalTemp.push(s_brands[i]);\\n        //     }\\n        // }\\n\\n        // for (uint256 i = 0; i < finalTemp.length; i++) {\\n        //     s_brands[i] = finalTemp[i];\\n        // }\\n\\n        // for (uint256 i = finalTemp.length; i < s_brands.length; i++) {\\n        //     delete s_brands[i];\\n        // }\\n\\n        // s_currentTimeStamp = block.timestamp;\\n    }\\n\\n    //View or Pure Functions\\n\\n    function getOwner() public view returns (address) {\\n        return i_owner;\\n    }\\n\\n    function getInterval() public view returns (uint256) {\\n        return i_interval;\\n    }\\n\\n    function getNumberOfBrands() public view returns (uint256) {\\n        return s_brands.length;\\n    }\\n\\n    function getWarrantyPack(uint256 index) public view returns (uint256) {\\n        return s_warrantyPack[index];\\n    }\\n\\n    function getBrandAddress(uint256 index) public view returns (address) {\\n        return s_brands[index].brandAddress;\\n    }\\n\\n    function getBrandName(uint256 index) public view returns (string memory) {\\n        return s_brands[index].brandName;\\n    }\\n\\n    function getBrandWarrantyLeft(uint256 index) public view returns (uint256) {\\n        return s_brands[index].warrantyPeriod;\\n    }\\n\\n    function getBrandIndex(address brandAdd) public view returns (uint256) {\\n        return s_addressToBrandIndex[brandAdd];\\n    }\\n}\\n\",\"keccak256\":\"0x2795eb8dff6bdea228e85f88805f0500eb2054c65799fc0599f7a15df46874e6\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60c06040523480156200001157600080fd5b50604051620013df380380620013df833981810160405281019062000037919062000112565b3373ffffffffffffffffffffffffffffffffffffffff1660808173ffffffffffffffffffffffffffffffffffffffff1660601b815250508060a0818152505042600181905550601e600260006001815260200190815260200160002081905550603c600260006002815260200190815260200160002081905550605a6002600060038152602001908152602001600020819055505062000144565b600080fd5b6000819050919050565b620000ec81620000d7565b8114620000f857600080fd5b50565b6000815190506200010c81620000e1565b92915050565b6000602082840312156200012b576200012a620000d2565b5b60006200013b84828501620000fb565b91505092915050565b60805160601c60a0516112646200017b600039600081816106fb01526108720152600081816102cc015261084a01526112646000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c80636e04ff0d1161008c57806391ad27b41161006657806391ad27b414610211578063ab6818931461022f578063d5b2a79e1461024d578063dbd8db6b1461027d576100cf565b80636e04ff0d146101a6578063826debf1146101d7578063893d20e8146101f3576100cf565b806311b63a22146100d45780633ccfd60b146101045780634585e33b1461010e5780634907c36a1461012a5780634a4ce2e31461015a5780636123504a14610176575b600080fd5b6100ee60048036038101906100e99190610a74565b6102ad565b6040516100fb9190610ab0565b60405180910390f35b61010c6102ca565b005b61012860048036038101906101239190610b30565b6103f5565b005b610144600480360381019061013f9190610a74565b6104ee565b6040516101519190610bbe565b60405180910390f35b610174600480360381019061016f9190610d46565b61053c565b005b610190600480360381019061018b9190610db5565b6106ac565b60405161019d9190610ab0565b60405180910390f35b6101c060048036038101906101bb9190610e83565b6106f5565b6040516101ce929190610f6f565b60405180910390f35b6101f160048036038101906101ec9190610f9f565b61076b565b005b6101fb610846565b6040516102089190610bbe565b60405180910390f35b61021961086e565b6040516102269190610ab0565b60405180910390f35b610237610896565b6040516102449190610ab0565b60405180910390f35b61026760048036038101906102629190610a74565b6108a2565b6040516102749190610ab0565b60405180910390f35b61029760048036038101906102929190610a74565b6108d0565b6040516102a49190611034565b60405180910390f35b600060026000838152602001908152602001600020549050919050565b7f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461034f576040517f37c76c9a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff164760405161037590611087565b60006040518083038185875af1925050503d80600081146103b2576040519150601f19603f3d011682016040523d82523d6000602084013e6103b7565b606091505b50509050806103f2576040517ff29b649600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50565b600061040f604051806020016040528060008152506106f5565b50905080610449576040517f4869d11200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080805490501415610488576040517f048e7b7500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60005b6000805490508110156104e8576001600082815481106104ae576104ad61109c565b5b906000526020600020906003020160020160008282546104ce91906110fa565b9250508190555080806104e09061112e565b91505061048b565b50505050565b60008082815481106105035761050261109c565b5b906000526020600020906003020160000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050919050565b600080549050600360008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550600060405180606001604052808573ffffffffffffffffffffffffffffffffffffffff1681526020018481526020016002600085815260200190815260200160002054815250908060018154018082558091505060019003906000526020600020906003020160009091909190915060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506020820151816001019080519060200190610657929190610987565b506040820151816002015550508273ffffffffffffffffffffffffffffffffffffffff167ff294465ab6aaa3650993093431777d23cda2be98f0ce448bbd202694c8beafb960405160405180910390a2505050565b6000600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b600060607f00000000000000000000000000000000000000000000000000000000000000006001544261072891906110fa565b119150816040518060400160405280600381526020017f307830000000000000000000000000000000000000000000000000000000000081525091509150915091565b6000600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490506002600083815260200190815260200160002054600082815481106107d7576107d661109c565b5b906000526020600020906003020160020160008282546107f79190611177565b925050819055508273ffffffffffffffffffffffffffffffffffffffff167f0ea7d2342843933fa1a5957a73c94e85bd2272ae8cbe39e30ac528fe08d4135e60405160405180910390a2505050565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b60008080549050905090565b60008082815481106108b7576108b661109c565b5b9060005260206000209060030201600201549050919050565b6060600082815481106108e6576108e561109c565b5b90600052602060002090600302016001018054610902906111fc565b80601f016020809104026020016040519081016040528092919081815260200182805461092e906111fc565b801561097b5780601f106109505761010080835404028352916020019161097b565b820191906000526020600020905b81548152906001019060200180831161095e57829003601f168201915b50505050509050919050565b828054610993906111fc565b90600052602060002090601f0160209004810192826109b557600085556109fc565b82601f106109ce57805160ff19168380011785556109fc565b828001600101855582156109fc579182015b828111156109fb5782518255916020019190600101906109e0565b5b509050610a099190610a0d565b5090565b5b80821115610a26576000816000905550600101610a0e565b5090565b6000604051905090565b600080fd5b600080fd5b6000819050919050565b610a5181610a3e565b8114610a5c57600080fd5b50565b600081359050610a6e81610a48565b92915050565b600060208284031215610a8a57610a89610a34565b5b6000610a9884828501610a5f565b91505092915050565b610aaa81610a3e565b82525050565b6000602082019050610ac56000830184610aa1565b92915050565b600080fd5b600080fd5b600080fd5b60008083601f840112610af057610aef610acb565b5b8235905067ffffffffffffffff811115610b0d57610b0c610ad0565b5b602083019150836001820283011115610b2957610b28610ad5565b5b9250929050565b60008060208385031215610b4757610b46610a34565b5b600083013567ffffffffffffffff811115610b6557610b64610a39565b5b610b7185828601610ada565b92509250509250929050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610ba882610b7d565b9050919050565b610bb881610b9d565b82525050565b6000602082019050610bd36000830184610baf565b92915050565b610be281610b9d565b8114610bed57600080fd5b50565b600081359050610bff81610bd9565b92915050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b610c5382610c0a565b810181811067ffffffffffffffff82111715610c7257610c71610c1b565b5b80604052505050565b6000610c85610a2a565b9050610c918282610c4a565b919050565b600067ffffffffffffffff821115610cb157610cb0610c1b565b5b610cba82610c0a565b9050602081019050919050565b82818337600083830152505050565b6000610ce9610ce484610c96565b610c7b565b905082815260208101848484011115610d0557610d04610c05565b5b610d10848285610cc7565b509392505050565b600082601f830112610d2d57610d2c610acb565b5b8135610d3d848260208601610cd6565b91505092915050565b600080600060608486031215610d5f57610d5e610a34565b5b6000610d6d86828701610bf0565b935050602084013567ffffffffffffffff811115610d8e57610d8d610a39565b5b610d9a86828701610d18565b9250506040610dab86828701610a5f565b9150509250925092565b600060208284031215610dcb57610dca610a34565b5b6000610dd984828501610bf0565b91505092915050565b600067ffffffffffffffff821115610dfd57610dfc610c1b565b5b610e0682610c0a565b9050602081019050919050565b6000610e26610e2184610de2565b610c7b565b905082815260208101848484011115610e4257610e41610c05565b5b610e4d848285610cc7565b509392505050565b600082601f830112610e6a57610e69610acb565b5b8135610e7a848260208601610e13565b91505092915050565b600060208284031215610e9957610e98610a34565b5b600082013567ffffffffffffffff811115610eb757610eb6610a39565b5b610ec384828501610e55565b91505092915050565b60008115159050919050565b610ee181610ecc565b82525050565b600081519050919050565b600082825260208201905092915050565b60005b83811015610f21578082015181840152602081019050610f06565b83811115610f30576000848401525b50505050565b6000610f4182610ee7565b610f4b8185610ef2565b9350610f5b818560208601610f03565b610f6481610c0a565b840191505092915050565b6000604082019050610f846000830185610ed8565b8181036020830152610f968184610f36565b90509392505050565b60008060408385031215610fb657610fb5610a34565b5b6000610fc485828601610bf0565b9250506020610fd585828601610a5f565b9150509250929050565b600081519050919050565b600082825260208201905092915050565b600061100682610fdf565b6110108185610fea565b9350611020818560208601610f03565b61102981610c0a565b840191505092915050565b6000602082019050818103600083015261104e8184610ffb565b905092915050565b600081905092915050565b50565b6000611071600083611056565b915061107c82611061565b600082019050919050565b600061109282611064565b9150819050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b600061110582610a3e565b915061111083610a3e565b925082821015611123576111226110cb565b5b828203905092915050565b600061113982610a3e565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82141561116c5761116b6110cb565b5b600182019050919050565b600061118282610a3e565b915061118d83610a3e565b9250827fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff038211156111c2576111c16110cb565b5b828201905092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b6000600282049050600182168061121457607f821691505b60208210811415611228576112276111cd565b5b5091905056fea2646970667358221220fe33ed9a30b17a9205a6f3b829e1efb4e3f1f9017d9fcf5c7a6043564b5ba62764736f6c63430008080033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c80636e04ff0d1161008c57806391ad27b41161006657806391ad27b414610211578063ab6818931461022f578063d5b2a79e1461024d578063dbd8db6b1461027d576100cf565b80636e04ff0d146101a6578063826debf1146101d7578063893d20e8146101f3576100cf565b806311b63a22146100d45780633ccfd60b146101045780634585e33b1461010e5780634907c36a1461012a5780634a4ce2e31461015a5780636123504a14610176575b600080fd5b6100ee60048036038101906100e99190610a74565b6102ad565b6040516100fb9190610ab0565b60405180910390f35b61010c6102ca565b005b61012860048036038101906101239190610b30565b6103f5565b005b610144600480360381019061013f9190610a74565b6104ee565b6040516101519190610bbe565b60405180910390f35b610174600480360381019061016f9190610d46565b61053c565b005b610190600480360381019061018b9190610db5565b6106ac565b60405161019d9190610ab0565b60405180910390f35b6101c060048036038101906101bb9190610e83565b6106f5565b6040516101ce929190610f6f565b60405180910390f35b6101f160048036038101906101ec9190610f9f565b61076b565b005b6101fb610846565b6040516102089190610bbe565b60405180910390f35b61021961086e565b6040516102269190610ab0565b60405180910390f35b610237610896565b6040516102449190610ab0565b60405180910390f35b61026760048036038101906102629190610a74565b6108a2565b6040516102749190610ab0565b60405180910390f35b61029760048036038101906102929190610a74565b6108d0565b6040516102a49190611034565b60405180910390f35b600060026000838152602001908152602001600020549050919050565b7f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461034f576040517f37c76c9a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff164760405161037590611087565b60006040518083038185875af1925050503d80600081146103b2576040519150601f19603f3d011682016040523d82523d6000602084013e6103b7565b606091505b50509050806103f2576040517ff29b649600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50565b600061040f604051806020016040528060008152506106f5565b50905080610449576040517f4869d11200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080805490501415610488576040517f048e7b7500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60005b6000805490508110156104e8576001600082815481106104ae576104ad61109c565b5b906000526020600020906003020160020160008282546104ce91906110fa565b9250508190555080806104e09061112e565b91505061048b565b50505050565b60008082815481106105035761050261109c565b5b906000526020600020906003020160000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050919050565b600080549050600360008573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550600060405180606001604052808573ffffffffffffffffffffffffffffffffffffffff1681526020018481526020016002600085815260200190815260200160002054815250908060018154018082558091505060019003906000526020600020906003020160009091909190915060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506020820151816001019080519060200190610657929190610987565b506040820151816002015550508273ffffffffffffffffffffffffffffffffffffffff167ff294465ab6aaa3650993093431777d23cda2be98f0ce448bbd202694c8beafb960405160405180910390a2505050565b6000600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050919050565b600060607f00000000000000000000000000000000000000000000000000000000000000006001544261072891906110fa565b119150816040518060400160405280600381526020017f307830000000000000000000000000000000000000000000000000000000000081525091509150915091565b6000600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490506002600083815260200190815260200160002054600082815481106107d7576107d661109c565b5b906000526020600020906003020160020160008282546107f79190611177565b925050819055508273ffffffffffffffffffffffffffffffffffffffff167f0ea7d2342843933fa1a5957a73c94e85bd2272ae8cbe39e30ac528fe08d4135e60405160405180910390a2505050565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b60007f0000000000000000000000000000000000000000000000000000000000000000905090565b60008080549050905090565b60008082815481106108b7576108b661109c565b5b9060005260206000209060030201600201549050919050565b6060600082815481106108e6576108e561109c565b5b90600052602060002090600302016001018054610902906111fc565b80601f016020809104026020016040519081016040528092919081815260200182805461092e906111fc565b801561097b5780601f106109505761010080835404028352916020019161097b565b820191906000526020600020905b81548152906001019060200180831161095e57829003601f168201915b50505050509050919050565b828054610993906111fc565b90600052602060002090601f0160209004810192826109b557600085556109fc565b82601f106109ce57805160ff19168380011785556109fc565b828001600101855582156109fc579182015b828111156109fb5782518255916020019190600101906109e0565b5b509050610a099190610a0d565b5090565b5b80821115610a26576000816000905550600101610a0e565b5090565b6000604051905090565b600080fd5b600080fd5b6000819050919050565b610a5181610a3e565b8114610a5c57600080fd5b50565b600081359050610a6e81610a48565b92915050565b600060208284031215610a8a57610a89610a34565b5b6000610a9884828501610a5f565b91505092915050565b610aaa81610a3e565b82525050565b6000602082019050610ac56000830184610aa1565b92915050565b600080fd5b600080fd5b600080fd5b60008083601f840112610af057610aef610acb565b5b8235905067ffffffffffffffff811115610b0d57610b0c610ad0565b5b602083019150836001820283011115610b2957610b28610ad5565b5b9250929050565b60008060208385031215610b4757610b46610a34565b5b600083013567ffffffffffffffff811115610b6557610b64610a39565b5b610b7185828601610ada565b92509250509250929050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610ba882610b7d565b9050919050565b610bb881610b9d565b82525050565b6000602082019050610bd36000830184610baf565b92915050565b610be281610b9d565b8114610bed57600080fd5b50565b600081359050610bff81610bd9565b92915050565b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b610c5382610c0a565b810181811067ffffffffffffffff82111715610c7257610c71610c1b565b5b80604052505050565b6000610c85610a2a565b9050610c918282610c4a565b919050565b600067ffffffffffffffff821115610cb157610cb0610c1b565b5b610cba82610c0a565b9050602081019050919050565b82818337600083830152505050565b6000610ce9610ce484610c96565b610c7b565b905082815260208101848484011115610d0557610d04610c05565b5b610d10848285610cc7565b509392505050565b600082601f830112610d2d57610d2c610acb565b5b8135610d3d848260208601610cd6565b91505092915050565b600080600060608486031215610d5f57610d5e610a34565b5b6000610d6d86828701610bf0565b935050602084013567ffffffffffffffff811115610d8e57610d8d610a39565b5b610d9a86828701610d18565b9250506040610dab86828701610a5f565b9150509250925092565b600060208284031215610dcb57610dca610a34565b5b6000610dd984828501610bf0565b91505092915050565b600067ffffffffffffffff821115610dfd57610dfc610c1b565b5b610e0682610c0a565b9050602081019050919050565b6000610e26610e2184610de2565b610c7b565b905082815260208101848484011115610e4257610e41610c05565b5b610e4d848285610cc7565b509392505050565b600082601f830112610e6a57610e69610acb565b5b8135610e7a848260208601610e13565b91505092915050565b600060208284031215610e9957610e98610a34565b5b600082013567ffffffffffffffff811115610eb757610eb6610a39565b5b610ec384828501610e55565b91505092915050565b60008115159050919050565b610ee181610ecc565b82525050565b600081519050919050565b600082825260208201905092915050565b60005b83811015610f21578082015181840152602081019050610f06565b83811115610f30576000848401525b50505050565b6000610f4182610ee7565b610f4b8185610ef2565b9350610f5b818560208601610f03565b610f6481610c0a565b840191505092915050565b6000604082019050610f846000830185610ed8565b8181036020830152610f968184610f36565b90509392505050565b60008060408385031215610fb657610fb5610a34565b5b6000610fc485828601610bf0565b9250506020610fd585828601610a5f565b9150509250929050565b600081519050919050565b600082825260208201905092915050565b600061100682610fdf565b6110108185610fea565b9350611020818560208601610f03565b61102981610c0a565b840191505092915050565b6000602082019050818103600083015261104e8184610ffb565b905092915050565b600081905092915050565b50565b6000611071600083611056565b915061107c82611061565b600082019050919050565b600061109282611064565b9150819050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b600061110582610a3e565b915061111083610a3e565b925082821015611123576111226110cb565b5b828203905092915050565b600061113982610a3e565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82141561116c5761116b6110cb565b5b600182019050919050565b600061118282610a3e565b915061118d83610a3e565b9250827fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff038211156111c2576111c16110cb565b5b828201905092915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b6000600282049050600182168061121457607f821691505b60208210811415611228576112276111cd565b5b5091905056fea2646970667358221220fe33ed9a30b17a9205a6f3b829e1efb4e3f1f9017d9fcf5c7a6043564b5ba62764736f6c63430008080033",
+  "devdoc": {
+    "details": "It interracts with the Brand Smart Contract to add their details in brands array & check for their warranty period.",
+    "kind": "dev",
+    "methods": {},
+    "title": "Admin Smart Contract",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "This contract is only accessable by someone in authority and can be used to check & maintain brands that provide nft warranties.",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 47,
+        "contract": "contracts/Admin.sol:Admin",
+        "label": "s_brands",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_array(t_struct(Brand)39_storage)dyn_storage"
+      },
+      {
+        "astId": 49,
+        "contract": "contracts/Admin.sol:Admin",
+        "label": "s_currentTimeStamp",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 53,
+        "contract": "contracts/Admin.sol:Admin",
+        "label": "s_warrantyPack",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_uint256,t_uint256)"
+      },
+      {
+        "astId": 57,
+        "contract": "contracts/Admin.sol:Admin",
+        "label": "s_addressToBrandIndex",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_address,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_struct(Brand)39_storage)dyn_storage": {
+        "base": "t_struct(Brand)39_storage",
+        "encoding": "dynamic_array",
+        "label": "struct Admin.Brand[]",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_mapping(t_uint256,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Brand)39_storage": {
+        "encoding": "inplace",
+        "label": "struct Admin.Brand",
+        "members": [
+          {
+            "astId": 34,
+            "contract": "contracts/Admin.sol:Admin",
+            "label": "brandAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 36,
+            "contract": "contracts/Admin.sol:Admin",
+            "label": "brandName",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 38,
+            "contract": "contracts/Admin.sol:Admin",
+            "label": "warrantyPeriod",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
