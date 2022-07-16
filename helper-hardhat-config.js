@@ -13,6 +13,11 @@ const networkConfig = {
         subscriptionId: "6926",
         keepersUpdateInterval: "86400",
     },
+    80001: {
+        name: "rinkeby",
+        subscriptionId: "6926",
+        keepersUpdateInterval: "86400",
+    },
 }
 
 const developmentChains = ["hardhat", "localhost"]
