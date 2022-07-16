@@ -10,6 +10,20 @@ error Admin__WithdrawFailed();
 error Admin__UpkeepNotTrue();
 error Admin__NoBrandAvailable();
 
+//Interface
+
+contract InterfaceAdmin {
+    function addBrand(
+        address _brandAdd,
+        string memory _brandName,
+        uint256 _warrantyIndex
+    ) external {}
+
+    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external {}
+}
+
+//Contract
+
 /**@title Admin Smart Contract
  *@notice This contract is only accessable by someone in authority and can be used to check & maintain brands that provide nft warranties.
  *@dev It interracts with the Brand Smart Contract to add their details in brands array & check for their warranty period.
@@ -79,6 +93,9 @@ contract Admin is KeeperCompatibleInterface {
         if (!callSuccess) revert Admin__WithdrawFailed();
     }
 
+    /**
+     *@notice Overriden by the KeepersInterface, the returned value must be true to run performUpKeep.
+     */
     function checkUpkeep(
         bytes memory /* checkData */
     )
@@ -94,6 +111,9 @@ contract Admin is KeeperCompatibleInterface {
         return (upkeepNeeded, "0x0");
     }
 
+    /**
+     *@notice After checkUpkeep returns true, it updates the warranty of all brands in the array.
+     */
     function performUpkeep(
         bytes calldata /* performData */
     ) external override {

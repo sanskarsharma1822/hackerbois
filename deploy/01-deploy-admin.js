@@ -15,11 +15,13 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         log: true,
     })
 
+    log("----------------------------------------------------")
+
     // Verify the deployment
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        log("Verifying...")
-        await verify(admin.address, arguments)
-    }
+    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    //     log("Verifying...")
+    //     await verify(admin.address, arguments)
+    // }
 }
 
 module.exports.tags = ["all", "admin"]
