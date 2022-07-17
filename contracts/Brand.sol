@@ -6,6 +6,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Admin.sol";
 
+//Events
+event BrandCreated(address indexed brandSmartContAddress);
+
 //Contract
 
 /**@title Brand/Retailer Smart Contract
@@ -83,7 +86,8 @@ contract BrandFactory {
     }
 
     function deployBrandContract() public {
-        new Brands(s_brandAddress, s_brandName, s_warrantyPeriod, i_adminAddress);
+        Brands brandSmartContAddress = new Brands(s_brandAddress, s_brandName, s_warrantyPeriod, i_adminAddress);
+        emit BrandCreated(brandSmartContAddress);
     }
 }
 
