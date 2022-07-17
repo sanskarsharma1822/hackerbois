@@ -12,7 +12,7 @@ import "./Admin.sol";
  *@notice This contract is accessable by brands registered with flipkart and can be used to produce & check warranties
  *@dev It interracts with the Admin Smart Contract Interface to use extendWarranty & addBrand. It creates the NFT warranties and transfer it to first owners using ERC721 tokens
  */
-contract brand is ERC721, Ownable {
+contract Brands is ERC721, Ownable {
     // uint256 public tokenCounter;
     address public creator;
     bool public isMintEnabled;
@@ -28,19 +28,20 @@ contract brand is ERC721, Ownable {
     mapping(uint256 => string) public tokenIdToTokenURI;
 
     constructor(
+        address payable brandAddress,
         string memory brandName,
         uint256 warrantyIndex,
         address adminAddress
     ) payable ERC721("Product", "PRD") {
         fee = 0.1 * 10**18;
         totalSupply = 0;
-        creator = msg.sender;
+        creator = brandAddress;
         isMintEnabled = true;
         maxSupply = 100;
         i_adminAddress = payable(adminAddress);
         //Register => Add Brand;
         i_admin = InterfaceAdmin(i_adminAddress);
-        i_admin.addBrand(creator, brandName, warrantyIndex);
+        i_admin.addBrand(creator, brandName, warrantyIndex, address(this));
     }
 
     //Functions
@@ -48,6 +49,41 @@ contract brand is ERC721, Ownable {
     //Public
     function extendWarranty(uint256 warrantyPackIndex) public {
         i_admin.extendWarranty(creator, warrantyPackIndex);
+    }
+}
+
+/**@title Brand Factory Smart Contract
+ *@notice This contract deploys the smart contract used by brands
+ *@dev It uses the new keyword to deploy the contract with passing parameters to the Brands constructor
+ */
+
+contract BrandFactory {
+    //State Variables
+    address payable private s_brandAddress;
+    uint256 private s_warrantyPeriod;
+    string private s_brandName;
+    address payable immutable i_adminAddress;
+
+    //Constructor
+
+    constructor(address adminAddress) {
+        i_adminAddress = payable(adminAddress);
+    }
+
+    //Functions
+
+    function setBrandData(
+        address _brandAddress,
+        string calldata _brandName,
+        uint256 _warrantyPeriod
+    ) public {
+        s_brandAddress = payable(_brandAddress);
+        s_warrantyPeriod = _warrantyPeriod;
+        s_brandName = _brandName;
+    }
+
+    function deployBrandContract() public {
+        new Brands(s_brandAddress, s_brandName, s_warrantyPeriod, i_adminAddress);
     }
 }
 

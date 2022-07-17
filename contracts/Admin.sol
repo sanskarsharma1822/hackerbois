@@ -16,7 +16,8 @@ contract InterfaceAdmin {
     function addBrand(
         address _brandAdd,
         string memory _brandName,
-        uint256 _warrantyIndex
+        uint256 _warrantyIndex,
+        address _smartContractAddress
     ) external {}
 
     function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external {}
@@ -34,6 +35,7 @@ contract Admin is KeeperCompatibleInterface {
         address brandAddress;
         string brandName;
         uint256 warrantyPeriod;
+        address smartContractAddress;
     }
 
     //State Variables
@@ -73,10 +75,13 @@ contract Admin is KeeperCompatibleInterface {
     function addBrand(
         address _brandAdd,
         string memory _brandName,
-        uint256 _warrantyIndex
+        uint256 _warrantyIndex,
+        address _smartContractAddress
     ) external {
         s_addressToBrandIndex[_brandAdd] = s_brands.length;
-        s_brands.push(Brand(_brandAdd, _brandName, s_warrantyPack[_warrantyIndex]));
+        s_brands.push(
+            Brand(_brandAdd, _brandName, s_warrantyPack[_warrantyIndex], _smartContractAddress)
+        );
         emit BrandAdded(_brandAdd);
     }
 
@@ -161,6 +166,10 @@ contract Admin is KeeperCompatibleInterface {
 
     function getBrandWarrantyLeft(uint256 index) public view returns (uint256) {
         return s_brands[index].warrantyPeriod;
+    }
+
+    function getBrandSmartContractAddress(uint256 index) public view returns (address) {
+        return s_brands[index].smartContractAddress;
     }
 
     function getBrandIndex(address brandAdd) public view returns (uint256) {
