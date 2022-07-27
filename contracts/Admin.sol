@@ -14,13 +14,19 @@ error Admin__NoBrandAvailable();
 
 contract InterfaceAdmin {
     function addBrand(
+        uint256 _brandID,
         address _brandAdd,
         string memory _brandName,
+        string memory _brandEmailAddress,
         uint256 _warrantyIndex,
         address _smartContractAddress
     ) external {}
 
-    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external {}
+    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external payable {}
+
+    function getEntryFee(uint256 _index) external view returns (uint256) {}
+
+    function getBrandID(address brandAdd) external view returns (uint256) {}
 }
 
 //Contract
@@ -32,8 +38,10 @@ contract InterfaceAdmin {
 contract Admin is KeeperCompatibleInterface {
     //Type Declaration
     struct Brand {
+        uint256 brandID;
         address brandAddress;
         string brandName;
+        string brandEmailAddress;
         uint256 warrantyPeriod;
         address smartContractAddress;
     }
@@ -43,8 +51,9 @@ contract Admin is KeeperCompatibleInterface {
     uint256 private immutable i_interval;
     Brand[] private s_brands;
     uint256 private s_currentTimeStamp;
-    mapping(uint256 => uint256) private s_warrantyPack;
+    mapping(uint256 => uint256[]) private s_warrantyPack;
     mapping(address => uint256) private s_addressToBrandIndex;
+    mapping(address => uint256) private s_addressToBrandId;
 
     //Events
     event BrandAdded(address indexed brandAdd);
@@ -61,9 +70,9 @@ contract Admin is KeeperCompatibleInterface {
         i_owner = payable(msg.sender);
         i_interval = interval;
         s_currentTimeStamp = block.timestamp;
-        s_warrantyPack[1] = 30;
-        s_warrantyPack[2] = 60;
-        s_warrantyPack[3] = 90;
+        s_warrantyPack[1] = [30, 1];
+        s_warrantyPack[2] = [60, 2];
+        s_warrantyPack[3] = [90, 3];
     }
 
     //Recieve or Fallback
@@ -73,30 +82,40 @@ contract Admin is KeeperCompatibleInterface {
     ////External
 
     function addBrand(
+        uint256 _brandID,
         address _brandAdd,
         string memory _brandName,
+        string memory _brandEmailAddress,
         uint256 _warrantyIndex,
         address _smartContractAddress
     ) external {
         s_addressToBrandIndex[_brandAdd] = s_brands.length;
+        s_addressToBrandId[_brandAdd] = _brandID;
         s_brands.push(
-            Brand(_brandAdd, _brandName, s_warrantyPack[_warrantyIndex], _smartContractAddress)
+            Brand(
+                _brandID,
+                _brandAdd,
+                _brandName,
+                _brandEmailAddress,
+                s_warrantyPack[_warrantyIndex][0],
+                _smartContractAddress
+            )
         );
         emit BrandAdded(_brandAdd);
     }
 
-    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external {
+    function extendWarranty(address _brandAdd, uint256 _warrantyIndex) external payable {
         uint256 index = s_addressToBrandIndex[_brandAdd];
-        s_brands[index].warrantyPeriod += s_warrantyPack[_warrantyIndex];
+        s_brands[index].warrantyPeriod += s_warrantyPack[_warrantyIndex][0];
         emit WarrantyExtended(_brandAdd);
     }
 
     ////Public
 
-    function withdraw() public onlyAdmin {
-        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
-        if (!callSuccess) revert Admin__WithdrawFailed();
-    }
+    // function withdraw() public onlyAdmin {
+    //     (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+    //     if (!callSuccess) revert Admin__WithdrawFailed();
+    // }
 
     /**
      *@notice Overriden by the KeepersInterface, the returned value must be true to run performUpKeep.
@@ -152,8 +171,8 @@ contract Admin is KeeperCompatibleInterface {
         return s_brands.length;
     }
 
-    function getWarrantyPack(uint256 index) public view returns (uint256) {
-        return s_warrantyPack[index];
+    function getWarrantyPack(uint256 warrantyPackIndex) public view returns (uint256) {
+        return s_warrantyPack[warrantyPackIndex][0];
     }
 
     function getBrandAddress(uint256 index) public view returns (address) {
@@ -164,6 +183,10 @@ contract Admin is KeeperCompatibleInterface {
         return s_brands[index].brandName;
     }
 
+    function getBrandEmailAddress(uint256 index) public view returns (string memory) {
+        return s_brands[index].brandEmailAddress;
+    }
+
     function getBrandWarrantyLeft(uint256 index) public view returns (uint256) {
         return s_brands[index].warrantyPeriod;
     }
@@ -172,7 +195,23 @@ contract Admin is KeeperCompatibleInterface {
         return s_brands[index].smartContractAddress;
     }
 
+    function getEntryFee(uint256 warrantyPackIndex) public view returns (uint256) {
+        return uint256(s_warrantyPack[warrantyPackIndex][1]);
+    }
+
     function getBrandIndex(address brandAdd) public view returns (uint256) {
         return s_addressToBrandIndex[brandAdd];
+    }
+
+    function getBrandID(address brandAdd) public view returns (uint256) {
+        return s_addressToBrandId[brandAdd];
+    }
+
+    function getBrandData(uint256 index) public view returns (Brand memory) {
+        return s_brands[index];
+    }
+
+    function getBrandArrays() public view returns (Brand[] memory) {
+        return s_brands;
     }
 }

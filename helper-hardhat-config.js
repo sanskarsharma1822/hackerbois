@@ -17,9 +17,18 @@ const networkConfig = {
     },
 }
 
+const sampleBrands = {
+    brandID: 1,
+    brandOwnerAddress: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    brandName: "Sample",
+    brandEmailAddress: "sample@gmail.com",
+    warrantyIndex: 1,
+}
+
 const developmentChains = ["hardhat", "localhost"]
 
 module.exports = {
     networkConfig,
     developmentChains,
+    sampleBrands,
 }
