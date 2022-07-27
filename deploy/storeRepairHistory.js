@@ -31,7 +31,8 @@ async function uploadMetaData(
   });
   await file.saveIPFS({ useMasterKey: true });
   console.log(file.ipfs());
-  console.log(file.hash());
+  // console.log(file.hash());
+  return(file.ipfs());
 }
 
 async function showRepairHistory(ipfs, newRepairHistory) {
@@ -55,13 +56,14 @@ async function showRepairHistory(ipfs, newRepairHistory) {
     "Warranty Claim": newRepairHistory,
   });
 
-  await uploadMetaData(
+  const result = await uploadMetaData(
     name,
     image,
     description,
     ownerHistory,
     newRepairHistory
   );
+  return result;
 }
 
 // async function main() {

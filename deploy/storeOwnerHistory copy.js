@@ -31,6 +31,8 @@ async function uploadMetaData(
   });
   await file.saveIPFS({ useMasterKey: true });
   console.log(file.ipfs());
+
+  return(file.ipfs());
   //   console.log(file.hash());
 }
 
@@ -49,7 +51,8 @@ async function showOwnerHistory(ipfs, newOwner) {
 
   ownerHistory.push(newOwner);
 
-  await uploadMetaData(name, image, description, ownerHistory, repairHistory);
+  const result = await uploadMetaData(name, image, description, ownerHistory, repairHistory);
+  return result;
 }
 
 // async function main() {
