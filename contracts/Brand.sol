@@ -9,11 +9,10 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "./Admin.sol";
 
 //Events
-error NFT_decayed();
-error Admin__UpkeepNotTrue();
-error Admin__NoBrandAvailable();
-
-event BrandCreated(address indexed brandSmartContAddress);
+error Brands__NFT_decayed();
+error Brands__UpkeepNotTrue();
+error Brands__NoBrandAvailable();
+error Brands__Not_Owner();
 
 //Contract
 
@@ -23,23 +22,25 @@ event BrandCreated(address indexed brandSmartContAddress);
  */
 contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     // uint256 public tokenCounter;
-    address public creator;
     bool public isMintEnabled;
     uint256 public totalSupply;
-    uint fee;
     uint maxSupply;
     uint256 private immutable day_interval;
     uint256 private s_currentTimeStamp;
-    string public brandURI;
-    bool startWarranty = false;
     bool firstTransact;
+
+    //Devansh's variables
+    mapping(uint256 => uint256) warrantyPeriod;
+    mapping(uint256 => string) history;
+
+    modifier tokenExist(uint256 _tokenId) {
+        require(_exists(_tokenId), "Token Doesn't exist!");
+        _;
+    }
 
     //Shanky Variables
     address payable immutable i_adminAddress;
     InterfaceAdmin immutable i_admin;
-
-    mapping(uint256 => uint256) warrantyPeriod;
-    mapping(uint256 => bool) isValid;
 
     constructor(
         address payable brandOwnerAddress,
@@ -47,35 +48,32 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         uint256 warrantyIndex,
         address adminAddress
     ) payable ERC721("Product", "PRD") {
-        fee = 0.1 * 10**18;
         totalSupply = 0;
-        creator = brandOwnerAddress;
         isMintEnabled = true;
         maxSupply = 100;
+        day_interval=interval;
+        firstTransact = true;
+        
         i_adminAddress = payable(adminAddress);
         //Register => Add Brand;
         i_admin = InterfaceAdmin(i_adminAddress);
         i_admin.addBrand(creator, brandURI, warrantyIndex, address(this));
-        day_interval=86400; //seconds of 1 day for upkeep
-        firstTransact = true;
     }
 
     //Functions
 
-    function createCollectible(string memory _tokenURI, uint256 _warrantyPeriod) 
+    function createCollectible(string memory _tokenURI, uint256 _warrantyPeriod, string memory _history) 
         external onlyOwner payable{
         require(isMintEnabled, "Minting is not enabled");
-        // require(msg.value > fee, "Wrong Value");
-        require(maxSupply > totalSupply, "Sold Out");
+        require(maxSupply > totalSupply, "Cannot mint more products");
 
-        totalSupply++;
         uint256 tokenId = totalSupply;
 
-        // tokens.push(Token(msg.sender, _tokenURI, _warrantyPeriod, true));
         warrantyPeriod[tokenId] = _warrantyPeriod;
-        isValid[tokenId] = true;
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
+        history[tokenId] = _history;
+        totalSupply++;
     }
 
     function toggleMint() external onlyOwner {
@@ -86,17 +84,16 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         maxSupply = _maxSupply;
     }
 
-    function transferToken(address _sendTo, uint256 _tokenId) public payable{
+    function transferToken(address _sendTo, uint256 _tokenId) tokenExist(_tokenId) public payable{
         if(firstTransact){
-            // tokens[_tokenId].isValid = true;
             firstTransact = false;
             s_currentTimeStamp = block.timestamp;
-            startWarranty = true;
         }
-        if((ownerOf(_tokenId) == msg.sender)&&(isValid[_tokenId])){
-            // tokens[_tokenId].owner = _sendTo;
-            _transfer(msg.sender, _sendTo, _tokenId);
-        }
+        if((ownerOf(_tokenId) == msg.sender)&&(_exists(_tokenId))){
+
+            safeTransferFrom(msg.sender, _sendTo, _tokenId);
+        } else revert Brands__Not_Owner();
+
     }
 
     function checkUpkeep(
@@ -110,7 +107,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
             bytes memory /* performData */
         )
     {
-        upkeepNeeded = ((block.timestamp - s_currentTimeStamp) > day_interval) && startWarranty;
+        upkeepNeeded = ((block.timestamp - s_currentTimeStamp) > day_interval) && !firstTransact;
         return (upkeepNeeded, "0x0");
     }
 
@@ -119,35 +116,34 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     ) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
 
-        if (!upkeepNeeded) revert Admin__UpkeepNotTrue();
-        if (totalSupply == 0) revert Admin__NoBrandAvailable();
+        if (!upkeepNeeded) revert Brands__UpkeepNotTrue();
+        if (totalSupply == 0) revert Brands__NoBrandAvailable();
 
-        for (uint256 i = 1; i <= totalSupply && isValid[i]; i++) {
+        for (uint256 i = 0; i < totalSupply && _exists(i); i++) {
             warrantyPeriod[i] -= 1;
             if (warrantyPeriod[i] == 0) {
-                isValid[i] = false;
-                // delete(tokens[i]);
+                _burn(i);
             }
         }
 
         s_currentTimeStamp = block.timestamp;
 
-        bool flag = false;
-        for (uint256 i = 1; i <=totalSupply; i++) {
-            if(isValid[i] == true){
-                flag=true;
-            }
-        }
-            if(!flag){
-                startWarranty = false;
-            }
+        // bool flag = false;
+        // for (uint256 i = 1; i <=totalSupply; i++) {
+        //     if(isValid[i] == true){
+        //         flag=true;
+        //     }
+        // }
+        //     if(!flag){
+        //         startWarranty = false;
+        //     }
     }
 
     function isNFTDecayed(uint256 _tokenId) public view returns(bool){
-        return !isValid[_tokenId];
+        return !_exists(_tokenId);
     }
 
-    function isOwner(uint256 _tokenId) public view returns(bool){
+    function isOwner(uint256 _tokenId) tokenExist(_tokenId) public view returns(bool){
         if(msg.sender == ownerOf(_tokenId)){
             return true;
         }
@@ -156,16 +152,31 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         }
     }
 
-    function validityPeriod(uint _tokenId) public view returns(uint256){
+    function validityPeriod(uint256 _tokenId) tokenExist(_tokenId) public view returns(uint256){
         return warrantyPeriod[_tokenId];
     }
 
-    
+    function viewhistory(uint256 _tokenId) tokenExist(_tokenId) public view returns(string memory){
+        return history[_tokenId];
+    }
+
+    function setHistory(uint256 _tokenId, string memory _newhistory) tokenExist(_tokenId) external {
+        if( ownerOf(_tokenId) == msg.sender ){
+            history[_tokenId] = _newhistory;
+        }
+    }
+
+    // function burnToken(uint256 _tokenId) public {
+    //     _burn(_tokenId);
+
+    // }
+
     //Public
     function extendWarranty(uint256 warrantyPackIndex) public {
         i_admin.extendWarranty(creator, warrantyPackIndex);
 
     }
+
 }
 
 /**@title Brand Factory Smart Contract
@@ -174,6 +185,9 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
  */
 
 contract BrandFactory {
+
+    event BrandCreated(address indexed brandSmartContAddress);
+
     //State Variables
     address payable private s_brandOwnerAddress;
     uint256 private s_warrantyPeriod;
@@ -203,37 +217,3 @@ contract BrandFactory {
         emit BrandCreated(brandSmartContAddress);
     }
 }
-
-
-// function createCollectible(string memory tokenURI)
-//         external payable{
-//         require(isMintEnabled, "Minting is not enabled");
-//         require(msg.value > fee, "Wrong Value");
-//         require(maxSupply > totalSupply, "Sold Out");
-
-//         totalSupply++;
-//         uint256 tokenId = totalSupply;
-//         tokenIdToTokenURI[tokenId] = tokenURI;
-//         _safeMint(msg.sender, tokenId);
-//     }
-
-//     function toggleMint() external onlyOwner {
-//         isMintEnabled = !isMintEnabled;
-//     }
-
-//     function setMaxSupply(uint256 _maxSupply) external onlyOwner{
-//         maxSupply = _maxSupply;
-//     }
-
-//     function transferOwnership(address _sender, uint256 _tokenID) public payable{
-//         if(msg.sender == creator){
-//             _safeMint(_sender, _tokenID);
-//         }
-//     }
-//     // function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
-//     //     require(
-//     //         _isApprovedOrOwner(_msgSender(), tokenId),
-//     //         "ERC721: transfer caller is not owner nor approved"
-//     //     );
-//     //     setTokenURI(tokenId, _tokenURI);
-//     // }
