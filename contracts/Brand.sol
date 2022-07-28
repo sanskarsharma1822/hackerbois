@@ -85,13 +85,8 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         string memory _tokenURI,
         uint256 _warrantyPeriod,
         string memory _history
-<<<<<<< HEAD
     ) public onlyOwner {
         // require(isMintEnabled, "Minting is not enabled");
-=======
-    ) public {
-        require(isMintEnabled, "Minting is not enabled");
->>>>>>> 50efaafed44bce05aaa7ce1746e2532f88cc772e
         require(maxSupply > totalSupply, "Cannot mint more products");
 
         uint256 tokenId = totalSupply;
