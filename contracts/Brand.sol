@@ -82,7 +82,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         string memory _tokenURI,
         uint256 _warrantyPeriod,
         string memory _history
-    ) external payable onlyOwner {
+    ) public {
         require(isMintEnabled, "Minting is not enabled");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
@@ -111,6 +111,15 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
         } else revert Brands__Not_Owner();
+    }
+
+    function viewTokenURI(uint256 _tokenId)
+        public
+        view
+        tokenExist(_tokenId)
+        returns (string memory)
+    {
+        return tokenURI(_tokenId);
     }
 
     function checkUpkeep(
@@ -201,6 +210,10 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         uint256 fee = i_admin.getEntryFee(_warrantyIndex) * 1e16;
         (bool callSuccess, ) = payable(i_adminAddress).call{value: fee}("");
         if (!callSuccess) revert Brands__FundFailed();
+    }
+
+    function getMaxSupply() public view returns (uint256) {
+        return maxSupply;
     }
 }
 

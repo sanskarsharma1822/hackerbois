@@ -54,6 +54,7 @@ contract Admin is KeeperCompatibleInterface {
     mapping(uint256 => uint256[]) private s_warrantyPack;
     mapping(address => uint256) private s_addressToBrandIndex;
     mapping(address => uint256) private s_addressToBrandId;
+    mapping(uint256 => uint256) private s_idToIndex;
 
     //Events
     event BrandAdded(address indexed brandAdd);
@@ -91,6 +92,7 @@ contract Admin is KeeperCompatibleInterface {
     ) external {
         s_addressToBrandIndex[_brandAdd] = s_brands.length;
         s_addressToBrandId[_brandAdd] = _brandID;
+        s_idToIndex[_brandID] = s_addressToBrandIndex[_brandAdd];
         s_brands.push(
             Brand(
                 _brandID,
@@ -213,5 +215,9 @@ contract Admin is KeeperCompatibleInterface {
 
     function getBrandArrays() public view returns (Brand[] memory) {
         return s_brands;
+    }
+
+    function getBrandIndexFromID(uint256 id) public view returns (uint256) {
+        return s_idToIndex[id];
     }
 }
