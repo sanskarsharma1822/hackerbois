@@ -22,10 +22,9 @@ error Brands__Not_Owner();
  *@dev It interracts with the Admin Smart Contract Interface to use extendWarranty & addBrand. It creates the NFT warranties and transfer it to first owners using ERC721 tokens
  */
 contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
-    // uint256 public tokenCounter;
     address private s_creator;
     uint256 private s_brandID;
-    bool public isMintEnabled;
+    // bool public isMintEnabled;
     uint256 public totalSupply;
     uint256 maxSupply;
     uint256 private immutable day_interval;
@@ -56,7 +55,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         address adminAddress
     ) payable ERC721("Product", "PRD") {
         totalSupply = 0;
-        isMintEnabled = true;
+        // isMintEnabled = true;
         maxSupply = 100;
         day_interval = 86400;
         firstTransact = true;
@@ -76,14 +75,18 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         );
     }
 
-    //Functions
+    //*****************************************************************************************/
+    //                               SETTER FUNCTIONS
+    //*************************************************************************************** */
+
+    // MINTING THE NFT - ONLY ALLOWED BY OWNER
 
     function createCollectible(
         string memory _tokenURI,
         uint256 _warrantyPeriod,
         string memory _history
-    ) external payable onlyOwner {
-        require(isMintEnabled, "Minting is not enabled");
+    ) public onlyOwner {
+        // require(isMintEnabled, "Minting is not enabled");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
         uint256 tokenId = totalSupply;
@@ -95,13 +98,13 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         totalSupply++;
     }
 
-    function toggleMint() external onlyOwner {
-        isMintEnabled = !isMintEnabled;
-    }
+    // SETTING THE MAX SUPPLY - ONLY ALLOWED BY OWNER
 
-    function sets_maxSupply(uint256 _maxSupply) external onlyOwner {
+    function setMaxSupply(uint256 _maxSupply) public onlyOwner {
         maxSupply = _maxSupply;
     }
+
+    //TRANSFERING OWNERSHIP OF NFT TOKEN
 
     function transferToken(address _sendTo, uint256 _tokenId) public payable tokenExist(_tokenId) {
         if (firstTransact) {
@@ -112,6 +115,19 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
         } else revert Brands__Not_Owner();
     }
+
+    // SETS THE HISTORY-URI OF THE NFT CHECKING IF ACCOUNT IS OWNER OF THE NFT
+
+    function setHistory(uint256 _tokenId, string memory _newhistory) external tokenExist(_tokenId) {
+        if (ownerOf(_tokenId) == msg.sender) {
+            history[_tokenId] = _newhistory;
+        }
+    }
+
+    //*****************************************************************************************/
+    //                    PERFORMING UPKEEP TO DECAY NFT BASED ON WARRANTY PERIOD
+    //                    AND BURNING THE TOKEN ONCE WARRANTY PERIOD IS OVER
+    //*************************************************************************************** */
 
     function checkUpkeep(
         bytes memory /* checkData */
@@ -144,21 +160,21 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         }
 
         s_currentTimeStamp = block.timestamp;
-
-        // bool flag = false;
-        // for (uint256 i = 1; i <=totalSupply; i++) {
-        //     if(isValid[i] == true){
-        //         flag=true;
-        //     }
-        // }
-        //     if(!flag){
-        //         startWarranty = false;
-        //     }
     }
+
+
+
+    //*****************************************************************************************/
+    //                               GETTER FUNCTIONS
+    //*************************************************************************************** */
+
+    //RETURNS TRUE OR FALSE BASED ON THE FACT IF TOKEN EXISTS OR NOT
 
     function isNFTDecayed(uint256 _tokenId) public view returns (bool) {
-        return !_exists(_tokenId);
+        return !(_exists(_tokenId));
     }
+
+    //CHECKS IF THE CURRENT ACCOUNT IS OWNER OF THE GIVEN NFT OR NOT
 
     function isOwner(uint256 _tokenId) public view tokenExist(_tokenId) returns (bool) {
         if (msg.sender == ownerOf(_tokenId)) {
@@ -168,23 +184,39 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         }
     }
 
+    //RETURNS THE WARRANTY DAYS REMAINING OF THE GIVEN NFT
+
     function validityPeriod(uint256 _tokenId) public view tokenExist(_tokenId) returns (uint256) {
         return warrantyPeriod[_tokenId];
     }
 
-    function viewhistory(uint256 _tokenId)
-        public
-        view
-        tokenExist(_tokenId)
+    
+    // RETURNS THE HISTORY URI OF THE TOKEN
+
+    function viewhistory(uint256 _tokenId) public view tokenExist(_tokenId)
         returns (string memory)
     {
         return history[_tokenId];
     }
 
-    function setHistory(uint256 _tokenId, string memory _newhistory) external tokenExist(_tokenId) {
-        if (ownerOf(_tokenId) == msg.sender) {
-            history[_tokenId] = _newhistory;
-        }
+    // RETURNS THE TOKEN URI OF THE TOKEN
+
+    function viewTokenURI(uint256 _tokenId) public view tokenExist(_tokenId) 
+        returns (string memory)
+    {
+        return tokenURI(_tokenId);
+    }
+
+    // RETURNS THE TOTAL TOKENS THAT HAVE BEEN MINTED
+
+    function getTotalySupply() public view returns(uint256) {
+        return totalSupply;
+    }
+
+    // RETURNS THE MAXIMUM ALLOWED TOKENS THAT CAN BE MINTED
+
+    function getMaxSupply() public view returns(uint256) {
+        return maxSupply;
     }
 
     // function burnToken(uint256 _tokenId) public {
@@ -192,7 +224,12 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     // }
 
-    //Public
+    //
+
+    //*****************************************************************************************/
+    //                               EXTENDING WARRANTY OF BRAND - FUNCTION
+    //*************************************************************************************** */
+
     function extendWarranty(uint256 warrantyPackIndex) public payable {
         i_admin.extendWarranty(s_creator, warrantyPackIndex);
     }
@@ -202,6 +239,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         (bool callSuccess, ) = payable(i_adminAddress).call{value: fee}("");
         if (!callSuccess) revert Brands__FundFailed();
     }
+
 }
 
 //Errors
