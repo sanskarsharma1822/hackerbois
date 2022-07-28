@@ -85,8 +85,13 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         string memory _tokenURI,
         uint256 _warrantyPeriod,
         string memory _history
+<<<<<<< HEAD
     ) public onlyOwner {
         // require(isMintEnabled, "Minting is not enabled");
+=======
+    ) public {
+        require(isMintEnabled, "Minting is not enabled");
+>>>>>>> 50efaafed44bce05aaa7ce1746e2532f88cc772e
         require(maxSupply > totalSupply, "Cannot mint more products");
 
         uint256 tokenId = totalSupply;
@@ -116,6 +121,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         } else revert Brands__Not_Owner();
     }
 
+<<<<<<< HEAD
     // SETS THE HISTORY-URI OF THE NFT CHECKING IF ACCOUNT IS OWNER OF THE NFT
 
     function setHistory(uint256 _tokenId, string memory _newhistory) external tokenExist(_tokenId) {
@@ -129,6 +135,17 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     //                    AND BURNING THE TOKEN ONCE WARRANTY PERIOD IS OVER
     //*************************************************************************************** */
 
+=======
+    function viewTokenURI(uint256 _tokenId)
+        public
+        view
+        tokenExist(_tokenId)
+        returns (string memory)
+    {
+        return tokenURI(_tokenId);
+    }
+
+>>>>>>> 50efaafed44bce05aaa7ce1746e2532f88cc772e
     function checkUpkeep(
         bytes memory /* checkData */
     )

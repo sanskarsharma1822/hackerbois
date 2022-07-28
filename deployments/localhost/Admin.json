@@ -304,6 +304,25 @@
       "inputs": [
         {
           "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBrandIndexFromID",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
           "name": "index",
           "type": "uint256"
         }
@@ -454,13 +473,13 @@
     "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     "transactionIndex": 0,
-    "gasUsed": "1998833",
+    "gasUsed": "2039399",
     "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
     "blockHash": "0x7d86286745e3ec9bd34635a996483eb3adff53f2ebfd404765d73d91ed3988bc",
     "transactionHash": "0xc6a2ae1f850eaa4180d0831afb4fd02f8fd4dce7f362d73ee651c63f6694df83",
     "logs": [],
     "blockNumber": 1,
-    "cumulativeGasUsed": "1998833",
+    "cumulativeGasUsed": "2039399",
     "status": 1,
     "byzantium": true
   },
@@ -533,6 +552,14 @@
         "offset": 0,
         "slot": "4",
         "type": "t_mapping(t_address,t_uint256)"
+      },
+      {
+        "astId": 1958,
+        "contract": "contracts/Admin.sol:Admin",
+        "label": "s_idToIndex",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_uint256,t_uint256)"
       }
     ],
     "types": {
@@ -566,6 +593,13 @@
         "label": "mapping(uint256 => uint256[])",
         "numberOfBytes": "32",
         "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
       },
       "t_string_storage": {
         "encoding": "bytes",
