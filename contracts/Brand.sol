@@ -62,6 +62,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
         i_adminAddress = payable(adminAddress);
         s_brandID = _brandID;
+        s_creator =msg.sender;
         //Register => Add Brand;
         i_admin = InterfaceAdmin(i_adminAddress);
         // i_admin = _admin;
@@ -86,6 +87,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         uint256 _warrantyPeriod,
         string memory _history
     ) public {
+        // require(msg.sender==s_creator, "Method not allowed");
         // require(isMintEnabled, "Minting is not enabled");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
