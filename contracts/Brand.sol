@@ -85,7 +85,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         string memory _tokenURI,
         uint256 _warrantyPeriod,
         string memory _history
-    ) public onlyOwner {
+    ) public {
         // require(isMintEnabled, "Minting is not enabled");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
@@ -162,8 +162,6 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         s_currentTimeStamp = block.timestamp;
     }
 
-
-
     //*****************************************************************************************/
     //                               GETTER FUNCTIONS
     //*************************************************************************************** */
@@ -190,10 +188,12 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         return warrantyPeriod[_tokenId];
     }
 
-    
     // RETURNS THE HISTORY URI OF THE TOKEN
 
-    function viewhistory(uint256 _tokenId) public view tokenExist(_tokenId)
+    function viewhistory(uint256 _tokenId)
+        public
+        view
+        tokenExist(_tokenId)
         returns (string memory)
     {
         return history[_tokenId];
@@ -201,7 +201,10 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     // RETURNS THE TOKEN URI OF THE TOKEN
 
-    function viewTokenURI(uint256 _tokenId) public view tokenExist(_tokenId) 
+    function viewTokenURI(uint256 _tokenId)
+        public
+        view
+        tokenExist(_tokenId)
         returns (string memory)
     {
         return tokenURI(_tokenId);
@@ -209,13 +212,13 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     // RETURNS THE TOTAL TOKENS THAT HAVE BEEN MINTED
 
-    function getTotalySupply() public view returns(uint256) {
+    function getTotalySupply() public view returns (uint256) {
         return totalSupply;
     }
 
     // RETURNS THE MAXIMUM ALLOWED TOKENS THAT CAN BE MINTED
 
-    function getMaxSupply() public view returns(uint256) {
+    function getMaxSupply() public view returns (uint256) {
         return maxSupply;
     }
 
@@ -239,7 +242,6 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         (bool callSuccess, ) = payable(i_adminAddress).call{value: fee}("");
         if (!callSuccess) revert Brands__FundFailed();
     }
-
 }
 
 //Errors
