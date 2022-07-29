@@ -118,7 +118,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     // SETS THE HISTORY-URI OF THE NFT CHECKING IF ACCOUNT IS OWNER OF THE NFT
 
-    function setHistory(uint256 _tokenId, string memory _newhistory) external tokenExist(_tokenId) {
+    function setHistory(uint256 _tokenId, string memory _newhistory) public tokenExist(_tokenId) {
         if (ownerOf(_tokenId) == msg.sender) {
             history[_tokenId] = _newhistory;
         }
