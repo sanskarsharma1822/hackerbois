@@ -30,12 +30,13 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     uint256 private immutable day_interval;
     uint256 private s_currentTimeStamp;
     uint256[] warrantyPeriod;
+    // uint256[] startWarranty;
     // bool firstTransact;
 
     //Devansh's variables
 
     mapping(uint256 => string) history;
-    mapping(uint256 => bool) startWarranty;
+    mapping(uint256 => uint256) startWarranty;
 
     modifier tokenExist(uint256 _tokenId) {
         require(_exists(_tokenId), "Token Doesn't exist!");
@@ -95,6 +96,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     ) public {
         // require(msg.sender==s_creator, "Method not allowed");
         // require(isMintEnabled, "Minting is not enabled");
+        require(s_creator == msg.sender, "Caller is not the owner");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
         uint256 tokenId = totalSupply;
@@ -102,7 +104,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         warrantyPeriod.push(_warrantyPeriod);
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
-        startWarranty[tokenId] = false;
+        // startWarranty[tokenId] = false;
         history[tokenId] = _history;
         totalSupply++;
     }
@@ -125,10 +127,10 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     //     } else revert Brands__Not_Owner();
     // }
 
-    function transferToken(address _sendTo, uint256 _tokenId, string memory _newHistory) public payable tokenExist(_tokenId) {
-        if (!startWarranty[_tokenId]) {
-            s_currentTimeStamp = block.timestamp;
-            startWarranty[_tokenId] = true;
+    function transferToken(address _sendTo, uint256 _tokenId, string memory _newHistory) public tokenExist(_tokenId) {
+        if (ownerOf(_tokenId) == s_creator) {
+            startWarranty[_tokenId] = block.timestamp;
+            // startWarranty[_tokenId] = true;
         }
         if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
@@ -172,12 +174,12 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         if (!upkeepNeeded) revert Brands__UpkeepNotTrue();
         if (totalSupply == 0) revert Brands__NoBrandAvailable();
 
-        for (uint256 i = 0; i < totalSupply && _exists(i) && startWarranty[i]; i++) {
-            warrantyPeriod[i] -= 1;
-            if (warrantyPeriod[i] == 0) {
-                _burn(i);
-            }
-        }
+        // for (uint256 i = 0; i < totalSupply && _exists(i) && startWarranty[i]; i++) {
+        //     warrantyPeriod[i] -= 1;
+        //     if (warrantyPeriod[i] == 0) {
+        //         _burn(i);
+        //     }
+        // }
 
         s_currentTimeStamp = block.timestamp;
         emit Brands__NFTWarrantyModified();
@@ -190,13 +192,16 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     //RETURNS TRUE OR FALSE BASED ON THE FACT IF TOKEN EXISTS OR NOT
 
-    function isNFTDecayed(uint256 _tokenId) public view returns (bool) {
-        return !(_exists(_tokenId));
+    function isNFTDecayed(uint256 _tokenId) public returns (bool) {
+    require((_exists(_tokenId)), "Token Doesn't exist");
+    if( ( block.timestamp - startWarranty[_tokenId] ) > warrantyPeriod[_tokenId]*86400 && ownerOf(_tokenId)!=s_creator){
+        _burn(_tokenId);
+        return true;
     }
-
-   
-
-    
+    else{
+        return false;
+    }
+    }
 
     //CHECKS IF THE CURRENT ACCOUNT IS OWNER OF THE GIVEN NFT OR NOT
 
@@ -247,6 +252,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     function getMaxSupply() public view returns (uint256) {
         return maxSupply;
     }
+
 
     // function burnToken(uint256 _tokenId) public {
     //     _burn(_tokenId);

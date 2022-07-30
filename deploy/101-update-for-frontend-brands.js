@@ -1,7 +1,7 @@
 const { ethers, network } = require("hardhat")
 const fs = require("fs")
 
-const BRANDS_ABI_FILE = "../flipkart-frontend-sample/constants/Brands/brandsABI.json"
+const BRANDS_ABI_FILE = "../hackerbois-frontend/src/constants/Brands/brandsABI.json"
 
 module.exports = async function () {
     console.log("Updating brands abi ...")
