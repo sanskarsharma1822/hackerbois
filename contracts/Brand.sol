@@ -5,7 +5,7 @@ pragma solidity ^0.8.8;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/KeeperCompatible.sol";
 import "./Admin.sol";
 
 //Errors
@@ -29,12 +29,13 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     uint256 maxSupply;
     uint256 private immutable day_interval;
     uint256 private s_currentTimeStamp;
-    bool firstTransact;
-    uint256[] private warrantyStartTime;
+    uint256[] warrantyPeriod;
+    // bool firstTransact;
 
     //Devansh's variables
-    mapping(uint256 => uint256) warrantyPeriod;
+
     mapping(uint256 => string) history;
+    mapping(uint256 => bool) startWarranty;
 
     modifier tokenExist(uint256 _tokenId) {
         require(_exists(_tokenId), "Token Doesn't exist!");
@@ -44,6 +45,9 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     //Shanky Variables
     address payable immutable i_adminAddress;
     InterfaceAdmin immutable i_admin;
+
+    //Events
+    event Brands__NFTWarrantyModified();
 
     constructor(
         uint256 _brandID,
@@ -59,7 +63,8 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         // isMintEnabled = true;
         maxSupply = 100;
         day_interval = 86400;
-        firstTransact = true;
+        // firstTransact = true;
+        s_currentTimeStamp = block.timestamp;
 
         i_adminAddress = payable(adminAddress);
         s_brandID = _brandID;
@@ -94,10 +99,10 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
         uint256 tokenId = totalSupply;
 
-        warrantyPeriod[tokenId] = _warrantyPeriod;
-        warrantyStartTime[tokenId] = block.timestamp;
+        warrantyPeriod.push(_warrantyPeriod);
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
+        startWarranty[tokenId] = false;
         history[tokenId] = _history;
         totalSupply++;
     }
@@ -121,9 +126,9 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     // }
 
     function transferToken(address _sendTo, uint256 _tokenId, string memory _newHistory) public payable tokenExist(_tokenId) {
-        if (firstTransact) {
-            firstTransact = false;
+        if (!startWarranty[_tokenId]) {
             s_currentTimeStamp = block.timestamp;
+            startWarranty[_tokenId] = true;
         }
         if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
@@ -155,7 +160,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
             bytes memory /* performData */
         )
     {
-        upkeepNeeded = ((block.timestamp - s_currentTimeStamp) > day_interval) && !firstTransact;
+        upkeepNeeded = ((block.timestamp - s_currentTimeStamp) > day_interval);
         return (upkeepNeeded, "0x0");
     }
 
@@ -167,7 +172,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         if (!upkeepNeeded) revert Brands__UpkeepNotTrue();
         if (totalSupply == 0) revert Brands__NoBrandAvailable();
 
-        for (uint256 i = 0; i < totalSupply && _exists(i); i++) {
+        for (uint256 i = 0; i < totalSupply && _exists(i) && startWarranty[i]; i++) {
             warrantyPeriod[i] -= 1;
             if (warrantyPeriod[i] == 0) {
                 _burn(i);
@@ -175,6 +180,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         }
 
         s_currentTimeStamp = block.timestamp;
+        emit Brands__NFTWarrantyModified();
     }
 
 
@@ -275,8 +281,6 @@ error BrandFactory__WithdrawFailed();
  */
 
 contract BrandFactory {
-    event BrandCreated(address indexed brandSmartContAddress);
-
     //State Variables
     address payable private s_brandOwnerAddress;
     uint256 private s_warrantyPeriod;

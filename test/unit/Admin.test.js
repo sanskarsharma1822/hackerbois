@@ -5,7 +5,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
 !developmentChains.includes(network.name)
     ? describe.skip
     : describe("Admin Unit Tests", function () {
-          let deployer, admin, acconts
+          let deployer, admin, accounts
           beforeEach(async function () {
               deployer = (await getNamedAccounts()).deployer
               await deployments.fixture(["all"])
@@ -90,8 +90,15 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
 
           describe("checkUpkeep", () => {
               it("returns false if enough time has no passed", async function () {
-                  await admin.addBrand(accounts[0].address, "Nike", 2)
-                  await network.provider.send("evm_increaseTime", [interval.toNumber() - 1])
+                  await admin.addBrand(
+                      212,
+                      accounts[0].address,
+                      "Nike",
+                      "nike@gmail.com",
+                      2,
+                      accounts[1].address
+                  )
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() - 10])
                   await network.provider.send("evm_mine", [])
                   const { upkeepNeeded } = await admin.callStatic.checkUpkeep([])
                   assert(!upkeepNeeded)
@@ -100,20 +107,50 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
 
           describe("performUpkeep", () => {
               it("runs only if checkUpkeep is true", async function () {
-                  await expect(admin.performUpkeep([])).to.be.revertedWith("Admin__UpkeepNotTrue")
+                  await admin.addBrand(
+                      212,
+                      accounts[0].address,
+                      "Nike",
+                      "nike@gmail.com",
+                      2,
+                      accounts[1].address
+                  )
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() - 10])
+                  await network.provider.send("evm_mine", [])
+                  //   await admin.performUpkeep([])
+                  await expect(admin.performUpkeep([])).to.be.revertedWith("Admin__UpkeepNotTrue()")
               })
 
               it("updates brand's warranty after interval", async function () {
-                  await admin.addBrand(accounts[0].address, "Nike", 2)
+                  await admin.addBrand(
+                      212,
+                      accounts[0].address,
+                      "Nike",
+                      "nike@gmail.com",
+                      2,
+                      accounts[1].address
+                  )
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
                   await network.provider.send("evm_mine", [])
                   const startingBrandWarranty = await admin.getBrandWarrantyLeft(0)
                   await admin.performUpkeep([])
                   const endingBrandWarranty = await admin.getBrandWarrantyLeft(0)
-                  await assert.equal(
-                      endingBrandWarranty.toNumber(),
-                      startingBrandWarranty.toNumber() - 1
+                  assert.equal(endingBrandWarranty.toNumber(), startingBrandWarranty.toNumber() - 1)
+              })
+
+              it("emits BrandArrayModified event", async function () {
+                  await admin.addBrand(
+                      212,
+                      accounts[0].address,
+                      "Nike",
+                      "nike@gmail.com",
+                      2,
+                      accounts[1].address
                   )
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                  await network.provider.send("evm_mine", [])
+                  const startingBrandWarranty = await admin.getBrandWarrantyLeft(0)
+                  await expect(admin.performUpkeep([])).to.emit(admin, "BrandArrayModified")
               })
 
               //   it("delete brands from array when there interval gets over", async function () {
