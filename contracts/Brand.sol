@@ -30,6 +30,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     uint256 private immutable day_interval;
     uint256 private s_currentTimeStamp;
     bool firstTransact;
+    uint256[] private warrantyStartTime;
 
     //Devansh's variables
     mapping(uint256 => uint256) warrantyPeriod;
@@ -94,6 +95,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         uint256 tokenId = totalSupply;
 
         warrantyPeriod[tokenId] = _warrantyPeriod;
+        warrantyStartTime[tokenId] = block.timestamp;
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, _tokenURI);
         history[tokenId] = _history;
@@ -108,13 +110,24 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     //TRANSFERING OWNERSHIP OF NFT TOKEN
 
-    function transferToken(address _sendTo, uint256 _tokenId) public payable tokenExist(_tokenId) {
+    // function transferToken(address _sendTo, uint256 _tokenId) public payable tokenExist(_tokenId) {
+    //     if (firstTransact) {
+    //         firstTransact = false;
+    //         s_currentTimeStamp = block.timestamp;
+    //     }
+    //     if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
+    //         safeTransferFrom(msg.sender, _sendTo, _tokenId);
+    //     } else revert Brands__Not_Owner();
+    // }
+
+    function transferToken(address _sendTo, uint256 _tokenId, string memory _newHistory) public payable tokenExist(_tokenId) {
         if (firstTransact) {
             firstTransact = false;
             s_currentTimeStamp = block.timestamp;
         }
         if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
+            setHistory(_tokenId, _newHistory);
         } else revert Brands__Not_Owner();
     }
 
@@ -164,8 +177,9 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
         s_currentTimeStamp = block.timestamp;
     }
 
+
     //*****************************************************************************************/
-    //                               GETTER FUNCTIONS
+    //                               DECAYING FUNCTION
     //*************************************************************************************** */
 
     //RETURNS TRUE OR FALSE BASED ON THE FACT IF TOKEN EXISTS OR NOT
@@ -173,6 +187,10 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     function isNFTDecayed(uint256 _tokenId) public view returns (bool) {
         return !(_exists(_tokenId));
     }
+
+   
+
+    
 
     //CHECKS IF THE CURRENT ACCOUNT IS OWNER OF THE GIVEN NFT OR NOT
 
