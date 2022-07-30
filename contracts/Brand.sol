@@ -69,7 +69,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
         i_adminAddress = payable(adminAddress);
         s_brandID = _brandID;
-        s_creator =msg.sender;
+        s_creator = msg.sender;
         //Register => Add Brand;
         i_admin = InterfaceAdmin(i_adminAddress);
         // i_admin = _admin;
@@ -267,12 +267,6 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     function extendWarranty(uint256 warrantyPackIndex) public payable {
         i_admin.extendWarranty(s_creator, warrantyPackIndex);
-    }
-
-    function fundAdmin(uint256 _warrantyIndex) public {
-        uint256 fee = i_admin.getEntryFee(_warrantyIndex) * 1e16;
-        (bool callSuccess, ) = payable(i_adminAddress).call{value: fee}("");
-        if (!callSuccess) revert Brands__FundFailed();
     }
 }
 

@@ -14,7 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     if (typeof adminContractAddress[chainId] !== "undefined") {
         const arguments = [
             sampleBrands["brandID"],
-            sampleBrands["brandOwnerAddress"],
+            deployer,
             sampleBrands["brandName"],
             sampleBrands["brandEmailAddress"],
             sampleBrands["warrantyIndex"],
