@@ -3,7 +3,7 @@
 pragma solidity ^0.8.8;
 
 //Imports
-import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/KeeperCompatible.sol";
 //Errors
 error Admin__Not_Admin();
 error Admin__WithdrawFailed();
@@ -59,6 +59,7 @@ contract Admin is KeeperCompatibleInterface {
     //Events
     event BrandAdded(address indexed brandAdd);
     event WarrantyExtended(address indexed brandAdd);
+    event BrandArrayModified();
 
     //Modifiers
     modifier onlyAdmin() {
@@ -157,6 +158,7 @@ contract Admin is KeeperCompatibleInterface {
         }
 
         s_currentTimeStamp = block.timestamp;
+        emit BrandArrayModified();
     }
 
     //View or Pure Functions

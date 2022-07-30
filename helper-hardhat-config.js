@@ -9,11 +9,11 @@ const networkConfig = {
     },
     4: {
         name: "rinkeby",
-        keepersUpdateInterval: "86400",
+        keepersUpdateInterval: "60",
     },
     80001: {
-        name: "rinkeby",
-        keepersUpdateInterval: "86400",
+        name: "polygon",
+        keepersUpdateInterval: "60",
     },
 }
 
