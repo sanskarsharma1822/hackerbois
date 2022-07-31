@@ -96,7 +96,7 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     ) public {
         // require(msg.sender==s_creator, "Method not allowed");
         // require(isMintEnabled, "Minting is not enabled");
-        require(s_creator == msg.sender, "Caller is not the owner");
+        require(s_creator != msg.sender, "Caller is not the owner");
         require(maxSupply > totalSupply, "Cannot mint more products");
 
         uint256 tokenId = totalSupply;
@@ -133,16 +133,20 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
             // startWarranty[_tokenId] = true;
         }
         if ((ownerOf(_tokenId) == msg.sender) && (_exists(_tokenId))) {
+            // require(checkIfDecayed(_tokenId),"NFT decayed");
             safeTransferFrom(msg.sender, _sendTo, _tokenId);
             setHistory(_tokenId, _newHistory);
+    
         } else revert Brands__Not_Owner();
     }
 
     // SETS THE HISTORY-URI OF THE NFT CHECKING IF ACCOUNT IS OWNER OF THE NFT
 
     function setHistory(uint256 _tokenId, string memory _newhistory) public tokenExist(_tokenId) {
+        // require(checkIfDecayed(_tokenId),"NFT decayed");
         if (ownerOf(_tokenId) == msg.sender) {
             history[_tokenId] = _newhistory;
+
         }
     }
 
@@ -151,6 +155,15 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
     //                    AND BURNING THE TOKEN ONCE WARRANTY PERIOD IS OVER
     //*************************************************************************************** */
 
+    function checkIfDecayed(uint256 _tokenId) public returns (bool)     {
+        if( ( block.timestamp - startWarranty[_tokenId] ) > warrantyPeriod[_tokenId]*86400 && ownerOf(_tokenId)!=s_creator){
+            _burn(_tokenId);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     function checkUpkeep(
         bytes memory /* checkData */
     )
@@ -192,15 +205,20 @@ contract Brands is ERC721URIStorage, Ownable, KeeperCompatibleInterface {
 
     //RETURNS TRUE OR FALSE BASED ON THE FACT IF TOKEN EXISTS OR NOT
 
-    function isNFTDecayed(uint256 _tokenId) public returns (bool) {
-    require((_exists(_tokenId)), "Token Doesn't exist");
-    if( ( block.timestamp - startWarranty[_tokenId] ) > warrantyPeriod[_tokenId]*86400 && ownerOf(_tokenId)!=s_creator){
-        _burn(_tokenId);
-        return true;
-    }
-    else{
+    function isNFTDecayed (uint256 _tokenId) view public returns (bool){
+    if(_exists(_tokenId)){
         return false;
     }
+    else{
+        return true;
+    }
+    // if( ( block.timestamp - startWarranty[_tokenId] ) > warrantyPeriod[_tokenId]*86400 && ownerOf(_tokenId)!=s_creator){
+    //     _burn(_tokenId);
+    //     return true;
+    // }
+    // else{
+    //     return false;
+    // }
     }
 
     //CHECKS IF THE CURRENT ACCOUNT IS OWNER OF THE GIVEN NFT OR NOT
